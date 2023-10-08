@@ -39,12 +39,37 @@ class FgCstationsApplicationTests {
     @Test
     void whenValidInput_thenReturns200() throws Exception{
         User user = new User();
+        Station station = new Station();
         FavoriteJourneyDTO favJourney = new FavoriteJourneyDTO();
         FriendsDTO friends = new FriendsDTO();
 
+        mockMvc.perform(get("/users").contentType("aplication/json"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/users/{username}").contentType("aplication/json")
+                        .param("username", "true")
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/stations").contentType("aplication/json"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/stations/{nom}").contentType("aplication/json")
+                        .param("nom", "true")
+                        .content(objectMapper.writeValueAsString(station)))
+                .andExpect(status().isOk());
+
         mockMvc.perform(post("/users/{userName}/favoriteJourney").contentType("aplication/json")
-                .param("FavoriteJourneyDTO","userName", "true")
-                .content(objectMapper.writeValueAsString(user)))
+                    .param("FavoriteJourneyDTO","userName", "true")
+                    .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/users/{userName}/friends").contentType("aplication/json")
+                        .param("username", "true")
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/users/friends").contentType("aplication/json"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/users/friends").contentType("aplication/json")
